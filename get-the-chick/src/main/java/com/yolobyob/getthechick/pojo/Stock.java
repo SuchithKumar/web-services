@@ -52,9 +52,10 @@ public class Stock {
 	public void setItem(Item item) {
 		this.item = item;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Stock [stockId=" + stockId + ", quantity=" + quantity + ", item=" + item + "]";
+		return "Stock [stockId=" + stockId + ", quantity=" + quantity + "]";
 	}
+	
 }

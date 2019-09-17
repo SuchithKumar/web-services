@@ -112,10 +112,9 @@ public class Dealer {
 
 	@Override
 	public String toString() {
-		return "Dealer [dealerId=" + dealerId + ", dealerName=" + dealerName + ", password=" + password + ", phone="
-				+ phone + ", emailId=" + emailId + ", addresses=" + addresses + ", orders=" + orders + "]";
+		return "Dealer [dealerId=" + dealerId + ", dealerName=" + dealerName + ", phone="
+				+ phone + ", emailId=" + emailId + "]";
 	}
-	
-	
+
 	
 }

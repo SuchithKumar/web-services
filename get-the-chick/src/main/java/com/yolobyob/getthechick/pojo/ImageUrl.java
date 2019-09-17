@@ -43,7 +43,11 @@ public class ImageUrl {
 	public void setItem(Item item) {
 		this.item = item;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ImageUrl [imageId=" + imageId + ", imageUrl=" + imageUrl + "]";
+	}
 	
 	
 }

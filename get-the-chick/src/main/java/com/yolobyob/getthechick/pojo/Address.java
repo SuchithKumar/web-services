@@ -152,10 +152,8 @@ public class Address {
 	public String toString() {
 		return "Address [addressId=" + addressId + ", houseNoOrBuildingName=" + houseNoOrBuildingName
 				+ ", roadOrAreaOrColony=" + roadOrAreaOrColony + ", addressLine2=" + addressLine2 + ", zipCode="
-				+ zipCode + ", city=" + city + ", state=" + state + ", landmark=" + landmark + ", customer=" + customer
-				+ ", dealer=" + dealer + "]";
+				+ zipCode + ", city=" + city + ", state=" + state + ", landmark=" + landmark + "]";
 	}
-	
-	
+
 	
 }

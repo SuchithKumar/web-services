@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -93,12 +92,10 @@ public class Order {
 		this.customer = customer;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", orderDate=" + orderDate + ", items=" + items + ", customer=" + customer
-				+ ", dealer=" + dealer + "]";
+		return "Order [orderId=" + orderId + ", orderDate=" + orderDate + ", items=" + items + "]";
 	}
 
-	
+
 }

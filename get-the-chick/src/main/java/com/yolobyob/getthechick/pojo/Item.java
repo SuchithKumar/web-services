@@ -130,8 +130,7 @@ public class Item {
 	@Override
 	public String toString() {
 		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", description=" + description + ", price=" + price
-				+ ", stock=" + stock + ", order=" + order + ", itemImageUrls=" + itemImageUrls + ", rating=" + rating
-				+ "]";
+				+ ", stock=" + stock + ", itemImageUrls=" + itemImageUrls + ", rating=" + rating + "]";
 	}
 
 	

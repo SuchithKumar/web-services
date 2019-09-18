@@ -1,24 +1,39 @@
 package com.yolobyob.getthechick.pojo;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity(name = "imageurl_table")
 public class ImageUrl {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long imageId;
+	private Long imageId;
 	
 	@NotNull(message = "Image url cannot be null")
 	private String imageUrl;
 	
-	@ManyToOne
+	@JsonBackReference(value = "itemImageUrls")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Item item;
+
+	public ImageUrl() {
+		
+	}
+	
+	public ImageUrl(Long imageId, @NotNull(message = "Image url cannot be null") String imageUrl, Item item) {
+		super();
+		this.imageId = imageId;
+		this.imageUrl = imageUrl;
+		this.item = item;
+	}
 
 	public long getImageId() {
 		return imageId;

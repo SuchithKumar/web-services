@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,34 +13,40 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "order_table")
 public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long orderId;
+	private Long orderId;
 	
 	@NotNull(message = "Order Date cannot be null")
 	@PastOrPresent(message = "Order Date cannot be a Future Date")
 	private Date orderDate;
 	
 	@NotNull(message = "Item cannot be null")
+	@JsonManagedReference(value = "orderItems")
 	@OneToMany(mappedBy = "order")
 	private List<Item> items;
 	
+	@JsonBackReference(value = "customerOrders")
 	@NotNull(message = "Customer cannot be null")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Customer customer;
 	
+	@JsonBackReference(value = "dealerOrders")
 	@NotNull(message = "Dealer cannot be null")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 	
 	public Order() {
 		
 	}
 
-	public Order(long orderId,
+	public Order(Long orderId,
 			@NotNull(message = "Order Date cannot be null") @PastOrPresent(message = "Order Date cannot be a Future Date") Date orderDate,
 			@NotNull(message = "Item cannot be null") List<Item> items,
 			@NotNull(message = "Customer cannot be null") Customer customer,
@@ -52,28 +59,49 @@ public class Order {
 		this.dealer = dealer;
 	}
 
-	public long getOrderId() {
+	public Long getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+
+
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
+
+
 
 	public Date getOrderDate() {
 		return orderDate;
 	}
 
+
+
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
 	}
+
+
 
 	public List<Item> getItems() {
 		return items;
 	}
 
+
+
 	public void setItems(List<Item> items) {
 		this.items = items;
+	}
+
+
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Dealer getDealer() {
@@ -82,14 +110,6 @@ public class Order {
 
 	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 	@Override

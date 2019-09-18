@@ -1,6 +1,7 @@
 package com.yolobyob.getthechick.pojo;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,12 +9,14 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity(name = "address_table")
 public class Address {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long addressId;
+	private Long addressId;
 	
 	@NotNull(message = "House number/Building name cannot be null")
 	private String houseNoOrBuildingName;
@@ -36,15 +39,17 @@ public class Address {
 	@NotNull(message = "landmark cannot be null")
 	private String landmark;
 	
-	@ManyToOne
+	@JsonBackReference(value = "customerAddresses")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Customer customer;
 	
-	@ManyToOne
+	@JsonBackReference(value = "dealerAddresses")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 
 	
 
-	public Address(long addressId,
+	public Address(Long addressId,
 			@NotNull(message = "House number/Building name cannot be null") String houseNoOrBuildingName,
 			@NotNull(message = "Road/Area/Colony cannot be null") String roadOrAreaOrColony, String addressLine2,
 			@NotNull @Size(max = 6, min = 6, message = "Zip code should be a 6 digit number") String zipCode,
@@ -68,11 +73,11 @@ public class Address {
 		
 	}
 
-	public long getAddressId() {
+	public Long getAddressId() {
 		return addressId;
 	}
 
-	public void setAddressId(long addressId) {
+	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
 	}
 

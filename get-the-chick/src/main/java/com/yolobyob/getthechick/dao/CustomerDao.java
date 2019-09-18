@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.yolobyob.getthechick.jpaRepo.CustomerJpaRepo;
 import com.yolobyob.getthechick.pojo.Customer;
 import com.yolobyob.getthechick.util.HibernateUtil;
 
@@ -36,7 +37,7 @@ public class CustomerDao {
 		session = factory.openSession();
 		Transaction tx = session.beginTransaction();
 		Optional<Customer> customer;
-		Query query = session.createQuery("from Customer where phone= :no");
+		Query query = session.createQuery("from Customer c where c.phone= :no");
 		query.setParameter("no", phone);
 		customer = (Optional<Customer>) query.uniqueResult();
 		tx.commit();
@@ -45,4 +46,6 @@ public class CustomerDao {
 		return customer;
 		
 	}
+	
+	
 }

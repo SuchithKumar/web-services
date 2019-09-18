@@ -10,13 +10,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "dealer_table")
 public class Dealer {
 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long dealerId;
+	private Long dealerId;
 	
 	@NotNull(message = "Dealer Name cannot be null")
 	private String dealerName;
@@ -30,17 +32,23 @@ public class Dealer {
 	@NotNull(message = "Email ID cannot be null")
 	private String emailId;
 	
+	@JsonManagedReference(value = "dealerAddresses")
 	@ManyToMany(mappedBy = "dealer")
 	private List<Address> addresses;
 	
+	@JsonManagedReference(value = "dealerOrders")
 	@OneToMany(mappedBy = "dealer")
 	private List<Order> orders;
 
+	@JsonManagedReference(value = "dealerItems")
+	@OneToMany(mappedBy = "dealer")
+	private List<Item> dealerItems;
+	
 	public Dealer() {
 		
 	}
 
-	public Dealer(long dealerId, @NotNull(message = "Dealer Name cannot be null") String dealerName,
+	public Dealer(Long dealerId, @NotNull(message = "Dealer Name cannot be null") String dealerName,
 			@NotNull(message = "Password cannot be null") String password,
 			@NotNull(message = "Phone cannot be null") String phone,
 			@NotNull(message = "Email ID cannot be null") String emailId, List<Address> addresses, List<Order> orders) {
@@ -54,11 +62,11 @@ public class Dealer {
 		this.orders = orders;
 	}
 
-	public long getDealerId() {
+	public Long getDealerId() {
 		return dealerId;
 	}
 
-	public void setDealerId(long dealerId) {
+	public void setDealerId(Long dealerId) {
 		this.dealerId = dealerId;
 	}
 
@@ -108,6 +116,14 @@ public class Dealer {
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+	
+	public List<Item> getItems() {
+		return dealerItems;
+	}
+
+	public void setItems(List<Item> items) {
+		this.dealerItems = items;
 	}
 
 	@Override

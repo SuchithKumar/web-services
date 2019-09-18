@@ -3,20 +3,26 @@ package com.yolobyob.getthechick.pojo;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "item_table")
 public class Item {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long itemId;
+	private Long itemId;
 	
 	@NotNull(message = "Item Name Cannot be null")
 	private String itemName;
@@ -25,43 +31,51 @@ public class Item {
 	private String description;
 	
 	@NotNull(message = "Item Price Cannot be null")
-	private long price;
+	private Long price;
 	
-	@OneToOne
-	private Stock stock;
+	@NotNull(message = "Item Price Cannot be null")
+	private Long stocks;
 	
-	@ManyToOne
+	@JsonBackReference(value = "orderItems")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Order order;
 	
+	@JsonManagedReference(value = "itemImageUrls")
 	@OneToMany(mappedBy = "item")
 	private List<ImageUrl> itemImageUrls;
+
+	@JsonBackReference(value = "dealerItems")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Dealer dealer;
 	
-	private float rating;
+	private Float rating;
 	
 	public Item() {
 		
 	}
 
-	public Item(long itemId, @NotNull(message = "Item Name Cannot be null") String itemName,
+	public Item(Long itemId, @NotNull(message = "Item Name Cannot be null") String itemName,
 			@NotNull(message = "Item Description Cannot be null") String description,
-			@NotNull(message = "Item Price Cannot be null") long price, Stock stock, Order order,
-			List<ImageUrl> itemImageUrls, float rating) {
+			@NotNull(message = "Item Price Cannot be null") Long price,
+			@NotNull(message = "Item Price Cannot be null") Long stocks, Order order, List<ImageUrl> itemImageUrls,
+			Dealer dealer, Float rating) {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.description = description;
 		this.price = price;
-		this.stock = stock;
+		this.stocks = stocks;
 		this.order = order;
 		this.itemImageUrls = itemImageUrls;
+		this.dealer = dealer;
 		this.rating = rating;
 	}
 
-	public long getItemId() {
+	public Long getItemId() {
 		return itemId;
 	}
 
-	public void setItemId(long itemId) {
+	public void setItemId(Long itemId) {
 		this.itemId = itemId;
 	}
 
@@ -81,23 +95,29 @@ public class Item {
 		this.description = description;
 	}
 
-	public long getPrice() {
+	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(long price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
-	public Stock getStock() {
-		return stock;
+	public Long getStocks() {
+		return stocks;
 	}
 
-	public void setStock(Stock stock) {
-		this.stock = stock;
+	public void setStocks(Long stocks) {
+		this.stocks = stocks;
 	}
 
+	public Order getOrder() {
+		return order;
+	}
 
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	public List<ImageUrl> getItemImageUrls() {
 		return itemImageUrls;
@@ -107,30 +127,26 @@ public class Item {
 		this.itemImageUrls = itemImageUrls;
 	}
 
-	public float getRating() {
+	public Dealer getDealer() {
+		return dealer;
+	}
+
+	public void setDealer(Dealer dealer) {
+		this.dealer = dealer;
+	}
+
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(float rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
-	}
-
-
-
-	public Order getOrder() {
-		return order;
-	}
-
-
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 	@Override
 	public String toString() {
 		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", description=" + description + ", price=" + price
-				+ ", stock=" + stock + ", itemImageUrls=" + itemImageUrls + ", rating=" + rating + "]";
+				+ "]";
 	}
 
 	

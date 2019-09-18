@@ -9,12 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "customer_table")
 public class Customer {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String customerId;
+	private Long customerId;
 	
 	@NotNull(message = "Customer Name cannot be null")
 	private  String customerName;
@@ -28,9 +30,11 @@ public class Customer {
 	@NotNull(message = "Email ID cannot be null")
 	private String emailId;
 	
+	@JsonManagedReference(value = "customerAddresses")
 	@OneToMany(mappedBy = "customer")
 	private List<Address> addresses;
 	
+	@JsonManagedReference(value = "customerOrders")
 	@OneToMany(mappedBy = "customer")
 	private List<Order> orders;
 
@@ -38,27 +42,27 @@ public class Customer {
 		
 	}
 	
-	public Customer(String customerId, @NotNull(message = "Customer Name cannot be null") String customerName,
+	public Customer(Long customerId, @NotNull(message = "Customer Name cannot be null") String customerName,
 			@NotNull(message = "Password cannot be null") String password,
 			@NotNull(message = "Phone cannot be null") String phone,
-			@NotNull(message = "Email ID cannot be null") String emailId, List<Address> addresses, List<Order> orders) {
+			@NotNull(message = "Email ID cannot be null") String emailId) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
 		this.password = password;
 		this.phone = phone;
 		this.emailId = emailId;
-		this.addresses = addresses;
-		this.orders = orders;
 	}
 
-	public String getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
+
 
 	public String getCustomerName() {
 		return customerName;

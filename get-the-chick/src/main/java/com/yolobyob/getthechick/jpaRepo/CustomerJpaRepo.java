@@ -1,4 +1,4 @@
-package com.yolobyob.getthechick.dao;
+package com.yolobyob.getthechick.jpaRepo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;

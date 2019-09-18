@@ -1,4 +1,4 @@
-package com.yolobyob.getthechick.pojo;
+package com.yolobyob.getthechick.entities;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -30,6 +31,7 @@ public class Dealer {
 	private String phone;
 	
 	@NotNull(message = "Email ID cannot be null")
+	@Email(message = "Valid Email Id needed")
 	private String emailId;
 	
 	@JsonManagedReference(value = "dealerAddresses")
@@ -48,18 +50,15 @@ public class Dealer {
 		
 	}
 
-	public Dealer(Long dealerId, @NotNull(message = "Dealer Name cannot be null") String dealerName,
+	public Dealer(@NotNull(message = "Dealer Name cannot be null") String dealerName,
 			@NotNull(message = "Password cannot be null") String password,
 			@NotNull(message = "Phone cannot be null") String phone,
-			@NotNull(message = "Email ID cannot be null") String emailId, List<Address> addresses, List<Order> orders) {
+			@NotNull(message = "Email ID cannot be null") @Email(message = "Valid Email Id needed") String emailId) {
 		super();
-		this.dealerId = dealerId;
 		this.dealerName = dealerName;
 		this.password = password;
 		this.phone = phone;
 		this.emailId = emailId;
-		this.addresses = addresses;
-		this.orders = orders;
 	}
 
 	public Long getDealerId() {

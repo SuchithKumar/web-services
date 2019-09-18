@@ -1,24 +1,30 @@
 package com.yolobyob.getthechick.controller;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.yolobyob.getthechick.beans.LoginBean;
+import com.yolobyob.getthechick.beans.RegisterBean;
+import com.yolobyob.getthechick.entities.Customer;
+import com.yolobyob.getthechick.entities.Dealer;
 import com.yolobyob.getthechick.exception.InvalidUserException;
-import com.yolobyob.getthechick.pojo.Customer;
-import com.yolobyob.getthechick.pojo.Dealer;
-import com.yolobyob.getthechick.pojo.LoginBean;
 import com.yolobyob.getthechick.service.CustomerService;
 import com.yolobyob.getthechick.service.DealerService;
 
 @RestController
 public class LoginController {
+	
+	public static String hostUrl="http://localhost:4300";
 
 	@Autowired
 	DealerService dealerService;
@@ -32,7 +38,7 @@ public class LoginController {
 		switch (login.getUserType()) {
 		case CUSTOMER: {
 			Optional<Customer> customerId = customerService.getCustomerById(Long.parseLong(login.getUserId()));
-			Optional<Customer> customerPhone = customerService.getCustomerByPhone(login.getUserId());
+			Optional<Customer> customerPhone = customerService.findCustomerByPhone(login.getUserId());
 			if (customerId.isPresent()) {
 				if (customerId.get().getPassword().equals(login.getPassword())) {
 					validUser = true;
@@ -50,7 +56,7 @@ public class LoginController {
 		}
 		case DEALER: {
 			Optional<Dealer> dealerId = dealerService.getDealerById(Long.parseLong(login.getUserId()));
-			Optional<Dealer> dealerPhone = dealerService.getDealerByPhone(login.getUserId());
+			Optional<Dealer> dealerPhone = dealerService.findDealerByPhone(login.getUserId());
 			if (dealerId.isPresent()) {
 				if (dealerId.get().getPassword().equals(login.getPassword())) {
 					validUser = true;
@@ -76,6 +82,36 @@ public class LoginController {
 			throw new InvalidUserException("Invalid User ID/Password!");
 		}
 
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterBean registerBean) {
+		
+		switch (registerBean.getUserType()) {
+		case CUSTOMER : {
+			Customer customer = new Customer(registerBean.getUserName(),registerBean.getPassword(),registerBean.getPhone(),registerBean.getEmailId());
+			Customer savedCustomer = customerService.saveCustomer(customer);
+			URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl+"/customers").path("/{customerId}").build(savedCustomer.getCustomerId());
+			return ResponseEntity.created(uri).build();
+			
+		}
+		case DEALER : {
+			Dealer dealer = new Dealer(registerBean.getUserName(),registerBean.getPassword(),registerBean.getPhone(),registerBean.getEmailId());
+			
+			Dealer savedDealer = dealerService.saveDealer(dealer);
+			URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl+"/dealers").path("/{dealerId}").build(savedDealer.getDealerId());
+			return ResponseEntity.created(uri).build();
+	
+		}
+		case ADMIN: {
+
+			break;
+		}
+		default:
+			break;
+		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 
 }

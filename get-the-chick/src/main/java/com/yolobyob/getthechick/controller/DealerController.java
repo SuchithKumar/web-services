@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.yolobyob.getthechick.entities.Dealer;
+import com.yolobyob.getthechick.entities.Item;
 import com.yolobyob.getthechick.exception.DealerNotFoundException;
 import com.yolobyob.getthechick.exception.ItemNotFoundException;
-import com.yolobyob.getthechick.pojo.Dealer;
-import com.yolobyob.getthechick.pojo.Item;
-import com.yolobyob.getthechick.pojo.LoginBean;
 import com.yolobyob.getthechick.service.DealerService;
 
 @RestController

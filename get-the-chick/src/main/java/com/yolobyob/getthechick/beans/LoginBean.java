@@ -1,4 +1,4 @@
-package com.yolobyob.getthechick.pojo;
+package com.yolobyob.getthechick.beans;
 
 import javax.validation.constraints.NotNull;
 

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.yolobyob.getthechick.controller.DealerController;
 import com.yolobyob.getthechick.dao.DealerDao;
 import com.yolobyob.getthechick.dao.ItemDao;
-import com.yolobyob.getthechick.pojo.Customer;
-import com.yolobyob.getthechick.pojo.Dealer;
-import com.yolobyob.getthechick.pojo.Item;
+import com.yolobyob.getthechick.entities.Customer;
+import com.yolobyob.getthechick.entities.Dealer;
+import com.yolobyob.getthechick.entities.Item;
 
 @Service
 public class DealerService {
@@ -35,10 +35,9 @@ public class DealerService {
 		return dealerDao.getDealerById(dealerId);
 	}
 	
-	public Optional<Dealer> getDealerByPhone(String phone) {
-		return dealerDao.getDealerByPhone(phone);
+	public Optional<Dealer> findDealerByPhone(String phone) {
+		return dealerDao.findDealerByPhone(phone);
 	}
-	
 
 	public Item savedDealerItem(Item item) {
 		return itemDao.saveItem(item);

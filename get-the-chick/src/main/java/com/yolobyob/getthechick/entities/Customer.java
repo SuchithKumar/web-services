@@ -1,4 +1,4 @@
-package com.yolobyob.getthechick.pojo;
+package com.yolobyob.getthechick.entities;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,6 +29,7 @@ public class Customer {
 	private String phone;
 	
 	@NotNull(message = "Email ID cannot be null")
+	@Email(message = "Valid Email Id needed")
 	private String emailId;
 	
 	@JsonManagedReference(value = "customerAddresses")
@@ -42,12 +44,11 @@ public class Customer {
 		
 	}
 	
-	public Customer(Long customerId, @NotNull(message = "Customer Name cannot be null") String customerName,
+	public Customer( @NotNull(message = "Customer Name cannot be null") String customerName,
 			@NotNull(message = "Password cannot be null") String password,
 			@NotNull(message = "Phone cannot be null") String phone,
-			@NotNull(message = "Email ID cannot be null") String emailId) {
+			@NotNull(message = "Email ID cannot be null") @Email(message = "Valid Email Id needed") String emailId) {
 		super();
-		this.customerId = customerId;
 		this.customerName = customerName;
 		this.password = password;
 		this.phone = phone;

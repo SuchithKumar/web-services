@@ -1,4 +1,4 @@
-package com.yolobyob.getthechick.pojo;
+package com.yolobyob.getthechick.entities;
 
 import java.util.Date;
 import java.util.List;

@@ -5,13 +5,13 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import com.yolobyob.getthechick.pojo.Address;
-import com.yolobyob.getthechick.pojo.Admin;
-import com.yolobyob.getthechick.pojo.Customer;
-import com.yolobyob.getthechick.pojo.Dealer;
-import com.yolobyob.getthechick.pojo.ImageUrl;
-import com.yolobyob.getthechick.pojo.Item;
-import com.yolobyob.getthechick.pojo.Order;
+import com.yolobyob.getthechick.entities.Address;
+import com.yolobyob.getthechick.entities.Admin;
+import com.yolobyob.getthechick.entities.Customer;
+import com.yolobyob.getthechick.entities.Dealer;
+import com.yolobyob.getthechick.entities.ImageUrl;
+import com.yolobyob.getthechick.entities.Item;
+import com.yolobyob.getthechick.entities.Order;
 
 
 public class HibernateUtil {

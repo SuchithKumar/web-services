@@ -48,6 +48,17 @@ public class DealerDao {
 		return dealer;
 	}
 	
+	public Optional<Dealer> findDealerByEmailId(String emailId){
+		Optional<Dealer> dealer = Optional.empty();
+		
+		Dealer foundDealer = dealerRepo.findByEmailId(emailId);
+		if(foundDealer!=null) {
+			dealer = Optional.of(foundDealer);
+		}
+		
+		return dealer;
+	}
+	
 	public Item saveItem(Item item) {
 		return itemRepo.save(item);
 	}

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.yolobyob.getthechick.controller.DealerController;
 import com.yolobyob.getthechick.dao.DealerDao;
+import com.yolobyob.getthechick.entities.Address;
 import com.yolobyob.getthechick.entities.Dealer;
+import com.yolobyob.getthechick.entities.ImageUrl;
 import com.yolobyob.getthechick.entities.Item;
 
 @Service
@@ -32,6 +34,10 @@ public class DealerService {
 	
 	public Optional<Dealer> findDealerByPhone(String phone) {
 		return dealerDao.findDealerByPhone(phone);
+	}
+	
+	public Optional<Dealer> findDealerByEmailId(String emailId) {
+		return dealerDao.findDealerByEmailId(emailId);
 	}
 
 	public Item savedDealerItem(Item item) {
@@ -63,4 +69,11 @@ public class DealerService {
 		return optionalItem;
 	}
 	
+	public Address saveAddress(Address address) {
+		return dealerDao.saveAddress(address);
+	}
+	
+	public ImageUrl saveImageUrl(ImageUrl url) {
+		return dealerDao.saveImageUrl(url);
+	}
 }

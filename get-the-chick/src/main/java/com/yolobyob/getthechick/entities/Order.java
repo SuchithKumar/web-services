@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Order {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long orderId;
 	
 	@NotNull(message = "Order Date cannot be null")
@@ -33,12 +33,10 @@ public class Order {
 	private List<Item> items;
 	
 	@JsonBackReference(value = "customerOrders")
-	@NotNull(message = "Customer cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Customer customer;
 	
 	@JsonBackReference(value = "dealerOrders")
-	@NotNull(message = "Dealer cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 	

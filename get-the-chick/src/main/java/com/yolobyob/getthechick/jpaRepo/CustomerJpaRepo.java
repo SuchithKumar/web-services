@@ -9,5 +9,7 @@ import com.yolobyob.getthechick.entities.Customer;
 public interface CustomerJpaRepo extends JpaRepository<Customer	, Long> {
 	
 	public Customer findByPhone(String phone);
+	
+	public Customer findByEmailId(String emailId);
 
 }

@@ -32,6 +32,17 @@ public class CustomerDao {
 		return customerRepo.findById(id);
 	}
 
+	public Optional<Customer> findCustomerByEmailId(String emailId){
+		Optional<Customer> customer = Optional.empty();
+
+		Customer foundCustomer = customerRepo.findByEmailId(emailId);
+		if (foundCustomer != null) {
+			customer = Optional.of(foundCustomer);
+		}
+
+		return customer;
+	}
+	
 	public Optional<Customer> findCustomerByPhone(String phone) {
 		Optional<Customer> customer = Optional.empty();
 
@@ -42,6 +53,7 @@ public class CustomerDao {
 
 		return customer;
 	}
+	
 	
 
 	public Address saveAddress(Address address) {

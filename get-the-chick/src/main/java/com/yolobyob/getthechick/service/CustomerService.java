@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yolobyob.getthechick.dao.CustomerDao;
+import com.yolobyob.getthechick.entities.Address;
 import com.yolobyob.getthechick.entities.Customer;
 import com.yolobyob.getthechick.entities.Order;
 
@@ -23,6 +24,10 @@ public class CustomerService {
 		return customerDao.findCustomerByPhone(phone);
 	}
 	
+	public Optional<Customer> findCustomerByEmailId(String emailId) {
+		return customerDao.findCustomerByEmailId(emailId);
+	}
+	
 	public Customer saveCustomer(Customer customer) {
 		return customerDao.saveCustomer(customer);
 	}
@@ -31,4 +36,7 @@ public class CustomerService {
 		return customerDao.saveOrder(order);
 	}
 	
+	public Address saveAddress(Address address) {
+		return customerDao.saveAddress(address);
+	}
 }

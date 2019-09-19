@@ -1,5 +1,6 @@
 package com.yolobyob.getthechick.controller;
 
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +8,15 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.yolobyob.getthechick.entities.Address;
 import com.yolobyob.getthechick.entities.Customer;
 import com.yolobyob.getthechick.entities.Dealer;
 import com.yolobyob.getthechick.entities.Order;
@@ -37,6 +41,8 @@ public class CustomerController {
 		}
 	}
 
+	
+	
 	@PostMapping("/customers/{customerId}/orders")
 	public Order saveOrder(@Valid @RequestBody Order order, @PathVariable Long customerId) {
 		Dealer dealer = order.getItems().get(0).getDealer();
@@ -70,4 +76,21 @@ public class CustomerController {
 
 	}
 
+	@PostMapping(path = "/customers/{customerId}/addresses")
+	public ResponseEntity<String> saveDealerAddress(@PathVariable Long customerId,@Valid @RequestBody Address address) {
+		Customer customer = getCustomerById(customerId);
+		
+		address.setCustomer(customer);
+		Address savedAddress =  customerService.saveAddress(address);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{addressId}").build(savedAddress.getAddressId());
+		
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@GetMapping(path = "/customers/{customerId}/addresses")
+	public List<Address> getCustomerAddress(@PathVariable Long customerId){
+		Customer customer = getCustomerById(customerId);
+		return customer.getAddresses();
+	}
+	
 }

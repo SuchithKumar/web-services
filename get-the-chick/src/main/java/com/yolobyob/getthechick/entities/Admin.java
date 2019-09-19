@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class Admin {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
 	@NotNull(message = "name cannot be null for admin")

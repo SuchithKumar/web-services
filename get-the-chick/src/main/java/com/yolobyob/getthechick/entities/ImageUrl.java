@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class ImageUrl {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long imageId;
 	
 	@NotNull(message = "Image url cannot be null")

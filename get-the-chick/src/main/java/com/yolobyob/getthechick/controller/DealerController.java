@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.yolobyob.getthechick.entities.Address;
 import com.yolobyob.getthechick.entities.Dealer;
+import com.yolobyob.getthechick.entities.ImageUrl;
 import com.yolobyob.getthechick.entities.Item;
 import com.yolobyob.getthechick.entities.Order;
 import com.yolobyob.getthechick.exception.DealerNotFoundException;
@@ -30,6 +32,7 @@ public class DealerController {
 	@Autowired
 	DealerService dealerService;
 
+	
 	@PostMapping("/dealers")
 	public ResponseEntity<String> saveDealer(@Valid @RequestBody Dealer dealer) {
 		Dealer savedDealer = dealerService.saveDealer(dealer);
@@ -101,4 +104,43 @@ public class DealerController {
 		throw new OrderNotFoundException("Order not found!");
 		
 	}
+	
+	
+	@PostMapping(path = "/dealers/{dealerId}/addresses")
+	public ResponseEntity<String> saveDealerAddress(@PathVariable Long dealerId,@Valid @RequestBody Address address) {
+		Dealer dealer = getDealerById(dealerId);
+		
+		address.setDealer(dealer);
+		Address savedAddress =  dealerService.saveAddress(address);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{addressId}").build(savedAddress.getAddressId());
+		
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@GetMapping(path = "/dealers/{dealerId}/addresses")
+	public List<Address> getDealersAddress(@PathVariable Long dealerId){
+		Dealer dealer = getDealerById(dealerId);
+		return dealer.getAddresses();
+	}
+	
+	@PostMapping(path = "/dealers/{dealerId}/items/{itemId}/images")
+	public ResponseEntity<String> saveImageUrl(@PathVariable Long dealerId,@PathVariable Long itemId,@Valid @RequestBody ImageUrl url ){
+		Item item = getItemById(dealerId, itemId);
+		
+		url.setItem(item);
+		ImageUrl savedUrl = dealerService.saveImageUrl(url);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{imageUrlId}").build(savedUrl.getImageId());
+		
+		return ResponseEntity.created(uri).build();
+		
+	}
+	
+	@GetMapping(path ="/dealers/{dealerId}/items/{itemId}/images")
+	public List<ImageUrl> getImages(@PathVariable Long dealerId,@PathVariable Long itemId){
+		Item item = getItemById(dealerId, itemId);
+		return item.getItemImageUrls();
+	}
+	
+	
 }
+

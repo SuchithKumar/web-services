@@ -18,13 +18,14 @@ import com.yolobyob.getthechick.beans.RegisterBean;
 import com.yolobyob.getthechick.entities.Customer;
 import com.yolobyob.getthechick.entities.Dealer;
 import com.yolobyob.getthechick.exception.InvalidUserException;
+import com.yolobyob.getthechick.exception.UserCreationException;
 import com.yolobyob.getthechick.service.CustomerService;
 import com.yolobyob.getthechick.service.DealerService;
 
 @RestController
 public class LoginController {
-	
-	public static String hostUrl="http://localhost:4300";
+
+	public static String hostUrl = "http://localhost:4300";
 
 	@Autowired
 	DealerService dealerService;
@@ -86,32 +87,50 @@ public class LoginController {
 
 	@PostMapping("/register")
 	public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterBean registerBean) {
-		
-		switch (registerBean.getUserType()) {
-		case CUSTOMER : {
-			Customer customer = new Customer(registerBean.getUserName(),registerBean.getPassword(),registerBean.getPhone(),registerBean.getEmailId());
-			Customer savedCustomer = customerService.saveCustomer(customer);
-			URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl+"/customers").path("/{customerId}").build(savedCustomer.getCustomerId());
-			return ResponseEntity.created(uri).build();
-			
-		}
-		case DEALER : {
-			Dealer dealer = new Dealer(registerBean.getUserName(),registerBean.getPassword(),registerBean.getPhone(),registerBean.getEmailId());
-			
-			Dealer savedDealer = dealerService.saveDealer(dealer);
-			URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl+"/dealers").path("/{dealerId}").build(savedDealer.getDealerId());
-			return ResponseEntity.created(uri).build();
-	
-		}
-		case ADMIN: {
+		Optional<Customer> customerEmail = customerService.findCustomerByEmailId(registerBean.getEmailId());
+		Optional<Customer> customerPhone = customerService.findCustomerByPhone(registerBean.getPhone());
+		Optional<Dealer> dealerEmail = dealerService.findDealerByEmailId(registerBean.getEmailId());
+		Optional<Dealer> dealerPhone = dealerService.findDealerByPhone(registerBean.getPhone());
 
-			break;
-		}
-		default:
-			break;
-		}
+		if (customerEmail.isPresent()) {
+			throw new UserCreationException("Customer already exists with this Email ID!");
+		} else if (customerPhone.isPresent()) {
+			throw new UserCreationException("Customer already exists with this Phone Number!");
+		} else if (dealerEmail.isPresent()) {
+			throw new UserCreationException("Dealer already exists with this Email ID!");
+		} else if (dealerPhone.isPresent()) {
+			throw new UserCreationException("Dealer already exists with this Phone Number!");
+		} else {
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			switch (registerBean.getUserType()) {
+			case CUSTOMER: {
+				Customer customer = new Customer(registerBean.getUserName(), registerBean.getPassword(),
+						registerBean.getPhone(), registerBean.getEmailId());
+				Customer savedCustomer = customerService.saveCustomer(customer);
+				URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl + "/customers")
+						.path("/{customerId}").build(savedCustomer.getCustomerId());
+				return ResponseEntity.created(uri).build();
+
+			}
+			case DEALER: {
+				Dealer dealer = new Dealer(registerBean.getUserName(), registerBean.getPassword(),
+						registerBean.getPhone(), registerBean.getEmailId());
+
+				Dealer savedDealer = dealerService.saveDealer(dealer);
+				URI uri = ServletUriComponentsBuilder.fromHttpUrl(LoginController.hostUrl + "/dealers")
+						.path("/{dealerId}").build(savedDealer.getDealerId());
+				return ResponseEntity.created(uri).build();
+
+			}
+			case ADMIN: {
+
+				break;
+			}
+			default:
+				break;
+			}
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
 	}
-
 }

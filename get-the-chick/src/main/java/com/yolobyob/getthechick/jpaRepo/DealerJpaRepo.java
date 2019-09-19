@@ -10,4 +10,7 @@ public interface DealerJpaRepo extends JpaRepository<Dealer	, Long> {
 
 	public Dealer findByPhone(String phone);
 	
+	public Dealer findByEmailId(String emailId);
+
+	
 }

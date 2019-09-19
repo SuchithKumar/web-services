@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.yolobyob.getthechick.controller.DealerController;
 import com.yolobyob.getthechick.dao.DealerDao;
-import com.yolobyob.getthechick.dao.ItemDao;
-import com.yolobyob.getthechick.entities.Customer;
 import com.yolobyob.getthechick.entities.Dealer;
 import com.yolobyob.getthechick.entities.Item;
 
@@ -23,9 +21,6 @@ public class DealerService {
 
 	@Autowired
 	DealerController dealerController;
-
-	@Autowired
-	ItemDao itemDao;
 
 	public Dealer saveDealer(Dealer dealer) {
 		return dealerDao.saveDealer(dealer);
@@ -40,7 +35,7 @@ public class DealerService {
 	}
 
 	public Item savedDealerItem(Item item) {
-		return itemDao.saveItem(item);
+		return dealerDao.saveItem(item);
 	}
 
 	public List<Item> getDealersAllItems(long dealerId) {

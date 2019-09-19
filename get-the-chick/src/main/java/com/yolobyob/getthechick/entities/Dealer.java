@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "dealer_table")
 public class Dealer {
-
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

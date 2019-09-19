@@ -1,6 +1,7 @@
 package com.yolobyob.getthechick.controller;
 
 import java.net.URI;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.yolobyob.getthechick.entities.Dealer;
 import com.yolobyob.getthechick.entities.Item;
+import com.yolobyob.getthechick.entities.Order;
 import com.yolobyob.getthechick.exception.DealerNotFoundException;
 import com.yolobyob.getthechick.exception.ItemNotFoundException;
+import com.yolobyob.getthechick.exception.OrderNotFoundException;
 import com.yolobyob.getthechick.service.DealerService;
 
 @RestController
@@ -26,7 +29,6 @@ public class DealerController {
 
 	@Autowired
 	DealerService dealerService;
-	
 
 	@PostMapping("/dealers")
 	public ResponseEntity<String> saveDealer(@Valid @RequestBody Dealer dealer) {
@@ -48,37 +50,55 @@ public class DealerController {
 		}
 	}
 
-	
-	
 	@GetMapping("/dealers/{dealerId}/items")
-	public List<Item> getDealersAllItems(@PathVariable long dealerId){
+	public List<Item> getDealersAllItems(@PathVariable long dealerId) {
 		return dealerService.getDealersAllItems(dealerId);
 	}
-	
+
 	@GetMapping("/dealers/{dealerId}/items/{itemId}")
-	public Item getItemById(@PathVariable long dealerId,@PathVariable long itemId){
+	public Item getItemById(@PathVariable long dealerId, @PathVariable long itemId) {
 		Optional<Item> item = dealerService.getDealerItemById(dealerId, itemId);
-		if(item.isPresent()) {
+		if (item.isPresent()) {
 			return item.get();
-		}else {
-			throw new ItemNotFoundException("Item with Item ID - "+itemId+" not found for Dealer ID - "+dealerId);
+		} else {
+			throw new ItemNotFoundException("Item with Item ID - " + itemId + " not found for Dealer ID - " + dealerId);
 		}
-				
+
 	}
-	
+
 	@PostMapping(path = "/dealers/{dealerId}/items")
-	public ResponseEntity<String> saveItem(@PathVariable long dealerId,@Valid @RequestBody Item item){
-		
+	public ResponseEntity<String> saveItem(@PathVariable long dealerId, @Valid @RequestBody Item item) {
+
 		Optional<Dealer> dealer = dealerService.getDealerById(dealerId);
 		item.setDealer(dealer.get());
 		Item savedItem = dealerService.savedDealerItem(item);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{itemId}").build(savedItem.getItemId());
-		
+
 		return ResponseEntity.created(uri).build();
+
+	}
+
+	@GetMapping(path = "/dealers/{dealerId}/orders")
+	public List<Order> getAllDealerOrders(@PathVariable Long dealerId) {
+		Dealer dealer = getDealerById(dealerId);
+		return dealer.getOrders();
+	}
+
+	
+	@GetMapping(path = "/dealers/{dealerId}/orders/{orderId}")
+	public Order getDealerOrderById(@PathVariable Long dealerId, @PathVariable Long orderId){
+		Dealer dealer = getDealerById(dealerId);
+		List<Order> orders = dealer.getOrders();
+		Iterator<Order> iterator = orders.iterator();
+		Order order = null;
+		while(iterator.hasNext()) {
+			order = iterator.next();
+			if(order.getOrderId()==orderId) {
+				return order;
+			}
+		}
+		
+		throw new OrderNotFoundException("Order not found!");
 		
 	}
-	
-	
-	
-	
 }

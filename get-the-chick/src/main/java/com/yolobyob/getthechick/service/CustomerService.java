@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yolobyob.getthechick.dao.CustomerDao;
 import com.yolobyob.getthechick.entities.Customer;
+import com.yolobyob.getthechick.entities.Order;
 
 @Service
 public class CustomerService {
@@ -24,6 +25,10 @@ public class CustomerService {
 	
 	public Customer saveCustomer(Customer customer) {
 		return customerDao.saveCustomer(customer);
+	}
+	
+	public Order saveOrder(Order order) {
+		return customerDao.saveOrder(order);
 	}
 	
 }

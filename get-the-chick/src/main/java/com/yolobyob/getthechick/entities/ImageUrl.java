@@ -10,18 +10,24 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "All Details of ImageUrl")
 @Entity(name = "imageurl_table")
 public class ImageUrl {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long imageId;
 	
 	@NotNull(message = "Image url cannot be null")
+	@ApiModelProperty("URL of the image, Cannot be null")
 	private String imageUrl;
 	
 	@JsonBackReference(value = "itemImageUrls")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@ApiModelProperty(notes = "Item this Url is linked to, Cannot be null")
 	private Item item;
 
 	public ImageUrl() {

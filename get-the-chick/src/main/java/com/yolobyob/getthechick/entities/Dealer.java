@@ -13,35 +13,47 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Complete details of Dealer")
 @Entity(name = "dealer_table")
 public class Dealer {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long dealerId;
 	
+	
 	@NotNull(message = "Dealer Name cannot be null")
+	@ApiModelProperty(notes = "Name of the Dealer, Cannot be null")
 	private String dealerName;
 	
 	@NotNull(message = "Password cannot be null")
+	@ApiModelProperty(notes = "Password of the Dealer, Cannot be null")
 	private String password;
 	
 	@NotNull(message = "Phone cannot be null")
+	@ApiModelProperty(notes = "Phone of the Dealer, Cannot be null")
 	private String phone;
 	
 	@NotNull(message = "Email ID cannot be null")
+	@ApiModelProperty(notes = "Email ID of the Dealer, Cannot be null and should be Valid")
 	@Email(message = "Valid Email Id needed")
 	private String emailId;
 	
 	@JsonManagedReference(value = "dealerAddresses")
+	@ApiModelProperty(notes = "All addresses of Dealer")
 	@ManyToMany(mappedBy = "dealer")
 	private List<Address> addresses;
 	
 	@JsonManagedReference(value = "dealerOrders")
+	@ApiModelProperty(notes = "All orders recieved for Dealer")
 	@OneToMany(mappedBy = "dealer")
 	private List<Order> orders;
 
 	@JsonManagedReference(value = "dealerItems")
+	@ApiModelProperty(notes = "All items of Dealer")
 	@OneToMany(mappedBy = "dealer")
 	private List<Item> dealerItems;
 	

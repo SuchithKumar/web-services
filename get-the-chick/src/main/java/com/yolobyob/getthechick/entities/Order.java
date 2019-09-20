@@ -16,27 +16,33 @@ import javax.validation.constraints.PastOrPresent;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity(name = "order_table")
 public class Order {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 	
 	@NotNull(message = "Order Date cannot be null")
 	@PastOrPresent(message = "Order Date cannot be a Future Date")
+	@ApiModelProperty(notes = "Date of the Order, Cannot be null")
 	private Date orderDate;
 	
-	@NotNull(message = "Item cannot be null")
+	@NotNull(message = "Items cannot be null")
+	@ApiModelProperty(notes = "All Items of the Order, Cannot be null")
 	@JsonManagedReference(value = "orderItems")
 	@OneToMany(mappedBy = "order")
 	private List<Item> items;
 	
 	@JsonBackReference(value = "customerOrders")
+	@ApiModelProperty(notes = "Customer who has Ordered, Cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Customer customer;
 	
 	@JsonBackReference(value = "dealerOrders")
+	@ApiModelProperty(notes = "Dealer of the Order, Cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 	

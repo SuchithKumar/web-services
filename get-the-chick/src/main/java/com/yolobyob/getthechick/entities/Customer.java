@@ -12,31 +12,41 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Complete Details of a Customer")
 @Entity(name = "customer_table")
 public class Customer {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customerId;
 	
-	@NotNull(message = "Customer Name cannot be null")
+	@NotNull(message = "Name of the Customer, Cannot be null")
+	@ApiModelProperty(notes  = "Name of the Customer, Cannot be null")
 	private  String customerName;
 	
-	@NotNull(message = "Password cannot be null")
+	@NotNull(message = "Password of the Customer, Cannot be null")
+	@ApiModelProperty(notes  = "Password cannot be null")
 	private String password;
 	
 	@NotNull(message = "Phone cannot be null")
+	@ApiModelProperty(notes  = "Phone number of the Customer, Cannot be null")
 	private String phone;
 	
 	@NotNull(message = "Email ID cannot be null")
+	@ApiModelProperty(notes  = "Email ID of the Customer, Cannot be null and should be Valid")
 	@Email(message = "Valid Email Id needed")
 	private String emailId;
 	
 	@JsonManagedReference(value = "customerAddresses")
+	@ApiModelProperty(notes  = "All addresses of customer")
 	@OneToMany(mappedBy = "customer")
 	private List<Address> addresses;
 	
 	@JsonManagedReference(value = "customerOrders")
+	@ApiModelProperty(notes  = "All orders of customer")
 	@OneToMany(mappedBy = "customer")
 	private List<Order> orders;
 

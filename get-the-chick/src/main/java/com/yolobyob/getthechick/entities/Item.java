@@ -14,47 +14,61 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Complete details of Item/Products of Dealer")
 @Entity(name = "item_table")
 public class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long itemId;
 	
 	@NotNull(message = "Item Name Cannot be null")
-	private String itemName;
+	@ApiModelProperty(notes = "Name of the Item, Cannot be null")
+	private  String itemName;
 	
 	@NotNull(message = "Item Description Cannot be null")
-	private String description;
+	@ApiModelProperty(notes = "Description of the Item, Cannot be null")
+	private  String description;
 	
 	@NotNull(message = "Item Price Cannot be null")
-	private Long price;
+	@ApiModelProperty(notes = "Price of the Item, Cannot be null")
+	private  Long price;
 	
-	@NotNull(message = "Item Price Cannot be null")
-	private Long stocks;
+	@NotNull(message = "Stocks Cannot be null")
+	@ApiModelProperty(notes = "Quantity of Items, Cannot be null")
+	private  Long stocks;
 	
 	@JsonBackReference(value = "orderItems")
+	@ApiModelProperty(notes = "Order of the Item, Cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Order order;
 	
 	@JsonManagedReference(value = "itemImageUrls")
+	@ApiModelProperty(notes = "All Image Locations of Item, Cannot be null")
 	@OneToMany(mappedBy = "item")
 	private List<ImageUrl> itemImageUrls;
 
 	@JsonBackReference(value = "dealerItems")
+	@ApiModelProperty(notes = "Dealer of the Item, Cannot be null")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 	
-	private Float rating;
+	@ApiModelProperty(notes = "Customer rating of the Item, Cannot be null")
+	private  Float rating;
 	
 	public Item() {
 		
 	}
 
+	
+
 	public Item(Long itemId, @NotNull(message = "Item Name Cannot be null") String itemName,
 			@NotNull(message = "Item Description Cannot be null") String description,
 			@NotNull(message = "Item Price Cannot be null") Long price,
-			@NotNull(message = "Item Price Cannot be null") Long stocks, Order order, List<ImageUrl> itemImageUrls,
+			@NotNull(message = "Stocks Cannot be null") Long stocks, Order order, List<ImageUrl> itemImageUrls,
 			Dealer dealer, Float rating) {
 		super();
 		this.itemId = itemId;
@@ -67,6 +81,8 @@ public class Item {
 		this.dealer = dealer;
 		this.rating = rating;
 	}
+
+
 
 	public Long getItemId() {
 		return itemId;
@@ -107,6 +123,7 @@ public class Item {
 	public void setStocks(Long stocks) {
 		this.stocks = stocks;
 	}
+
 
 	public Order getOrder() {
 		return order;

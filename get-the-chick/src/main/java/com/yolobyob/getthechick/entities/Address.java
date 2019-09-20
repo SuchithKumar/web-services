@@ -11,39 +11,52 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Complete details of address")
 @Entity(name = "address_table")
 public class Address {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
 	
 	@NotNull(message = "House number/Building name cannot be null")
+	@ApiModelProperty(notes = "House number/Building name, Cannot be null")
 	private String houseNoOrBuildingName;
 	
 	@NotNull(message = "Road/Area/Colony cannot be null")
+	@ApiModelProperty(notes = "Road/Area/Colony, Cannot be null")
 	private String roadOrAreaOrColony;
 	
+	@ApiModelProperty(notes = "Any more details (Optional)")
 	private String addressLine2;
 	
 	@NotNull
 	@Size(max = 6,min = 6 , message = "Zip code should be a 6 digit number")
+	@ApiModelProperty(notes = "Zip code, Should be a 6 digit number")
 	private String zipCode;
 	
 	@NotNull(message = "City cannot be null")
+	@ApiModelProperty(notes = "City, Cannot be null")
 	private String city;
 	
 	@NotNull(message = "State cannot be null")
+	@ApiModelProperty(notes = "State, Cannot be null")
 	private String state;
 	
 	@NotNull(message = "landmark cannot be null")
+	@ApiModelProperty(notes = "landmark, Cannot be null")
 	private String landmark;
 	
 	@JsonBackReference(value = "customerAddresses")
+	@ApiModelProperty(notes = "Customer Address")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Customer customer;
 	
 	@JsonBackReference(value = "dealerAddresses")
+	@ApiModelProperty(notes = "Dealer Address")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Dealer dealer;
 

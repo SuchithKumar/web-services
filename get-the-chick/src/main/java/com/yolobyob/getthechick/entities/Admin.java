@@ -6,20 +6,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "All details of Admin")
 @Entity(name = "admin_table")
 public class Admin {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotNull(message = "name cannot be null for admin")
+	@ApiModelProperty(notes = "Admin name, Cannot be null")
 	String adminName;
 	
 	@NotNull(message = "Password cannot be null for admin")
+	@ApiModelProperty(notes = "Admin password, Cannot be null")
 	String password;
 	
 	@NotNull(message = "role cannot be null for admin")
+	@ApiModelProperty(notes = "Admin role, Cannot be null")
 	String role;
 
 	public Admin() {
